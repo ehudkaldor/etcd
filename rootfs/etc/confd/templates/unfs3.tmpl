@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv sh
+#fdmove -c 2 1
+#s6-envdir env
+{{ if (getenv "CATALOG_SERVER") }}
+{{ else }}
+echo "starting rpcbind..."
+rpcbind
+echo "rpcbind started"
+echo "starting unfsd..."
+unfsd -sd -n 4711 -m 4711 -e /etc/exports
+echo "unfsd started"
+{{ end }}

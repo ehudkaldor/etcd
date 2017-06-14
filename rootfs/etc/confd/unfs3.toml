@@ -1,0 +1,4 @@
+[template]
+src = "unfs3.tmpl"
+dest = "/etc/cont-init.d/01-unfs3-runonce"
+mode = "0755"

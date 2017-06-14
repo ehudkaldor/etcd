@@ -1,0 +1,7 @@
+version: '3'
+services:
+  xcp:
+    image: ehudkaldor/xcp:latest
+    env_file: 
+      - dhcp.env
+    cmd: sh

@@ -1,0 +1,6 @@
+[xcp]
+{{ if (getenv "CATALOG_SERVER") }}
+catalog = {{ getenv "CATALOG_SERVER" }}:{{or (getenv "CATALOG_PATH") "/var/log"}}
+{{ else }}
+catalog = 127.0.0.1:/var/log
+{{ end }}

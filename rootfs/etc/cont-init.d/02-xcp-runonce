@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+
+#chmod +x /etc/services.d/xcp/run
+#xcp activate

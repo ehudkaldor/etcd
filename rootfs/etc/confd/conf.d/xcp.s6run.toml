@@ -1,3 +1,0 @@
-[template]
-src = "xcp.s6run.conf.tmpl"
-dest = "/etc/services.d/xcp/run"

@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv sh
-#fdmove -c 2 1
-#s6-envdir env
-
-{{ if and (getenv "XCP_SOURCE") (getenv "XCP_TARGET") }}
-  xcp copy {{ getenv "XCP_SOURCE" }} {{ getenv "XCP_TARGET" }} 2>&1
-{{ end }}
-

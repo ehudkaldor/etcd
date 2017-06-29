@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+#fdmove -c 2 1
+#s6-envdir env
+
+ip=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+echo "$ip is alive !"
+
+etcd --name ${HOSTNAME} --advertise-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --data-dir /var/etcd 

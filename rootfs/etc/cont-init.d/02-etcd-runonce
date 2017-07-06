@@ -1,0 +1,40 @@
+#!/usr/bin/with-contenv sh
+
+#for topic in `jq 'keys[]' /opt/env `; do
+#  echo "topic: $topic"
+#  etcdctl mk $tpoic
+#  for key in `jq '${topic} | keys[]' /opt/env`; do
+#    echo "key: $key";
+#  done;
+#done
+
+#for topic in `jq -r 'keys[]' /opt/env `; do 
+#  echo; 
+#  for key in `jq .$t /opt/env | jq -r 'keys[]'`; do 
+#    echo "$t/$key:"; 
+#    jq -r [".$t | .$key"] /opt/env | jq -r .[] ; 
+#  done; 
+#  echo; 
+#done
+
+echo "starting etcd..."
+#etcd --name ${HOSTNAME} --advertise-client-urls 'http://0.0.0.0:2379' --listen-client-urls 'http://0.0.0.0:2379' --data-dir /var/etcd &
+etcd --name ${HOSTNAME} --data-dir /var/etcd &
+echo "etcd started"
+
+for topic in `jq -r 'keys[]' /opt/env `; do 
+  echo; 
+  for key in `jq .$topic /opt/env | jq -r 'keys[]'`; do 
+    echo "$topic/$key:"; 
+    myVal=`jq -r [".$topic | .$key"] /opt/env | jq -r .[]`; 
+    echo "myVal: $myVal"; 
+    ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 put $topic/$key $myVal ; 
+#    curl http://127.0.0.1:2379/v2/keys/$topic/$key -XPUT -d value="$myVal"
+  done; 
+  echo;
+done
+
+
+echo "killing etcd?"
+killall etcd
+echo "ok, after kill command"

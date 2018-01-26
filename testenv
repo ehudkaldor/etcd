@@ -1,0 +1,15 @@
+{
+  "level1" : "key1",
+  "level2" : {
+    "inner1" : "val",
+    "inner2" : "val"
+  },
+  "array" : [
+    {
+      "array_val1" : "val"
+    },
+    {
+      "array_val2" : "val"
+    }
+  ]
+}

@@ -2,9 +2,13 @@
 #fdmove -c 2 1
 #s6-envdir env
 
-ip=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+local ip=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 echo "$ip is alive !"
+local localip=127.0.0.1
 
-#etcd --name ${HOSTNAME} --advertise-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --data-dir /var/etcd 
-etcd --name ${HOSTNAME} --advertise-client-urls "http://$ip:2379,http://$ip:4001" --listen-client-urls "http://$ip:2379,http://$ip:4001" --data-dir /var/etcd
-
+#etcd --name ${HOSTNAME} --advertise-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --data-dir /var/etcd
+etcd \
+  --name ${HOSTNAME} \
+  --advertise-client-urls "http://$ip:2379,http://$ip:4001,http://$localip:2379,http://$localip:4001" \
+  --listen-client-urls "http://$ip:2379,http://$ip:4001,http://$localip:2379,http://$localip:4001" \
+  --data-dir /var/etcd

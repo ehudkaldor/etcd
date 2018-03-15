@@ -8,36 +8,41 @@
 #  done;
 #done
 
-#for topic in `jq -r 'keys[]' /opt/env `; do 
-#  echo; 
-#  for key in `jq .$t /opt/env | jq -r 'keys[]'`; do 
-#    echo "$t/$key:"; 
-#    jq -r [".$t | .$key"] /opt/env | jq -r .[] ; 
-#  done; 
-#  echo; 
+#for topic in `jq -r 'keys[]' /opt/env `; do
+#  echo;
+#  for key in `jq .$t /opt/env | jq -r 'keys[]'`; do
+#    echo "$t/$key:";
+#    jq -r [".$t | .$key"] /opt/env | jq -r .[] ;
+#  done;
+#  echo;
 #done
 
 
-ip=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+# ip=$(ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
 
-echo "starting etcd..."
-etcd --name ${HOSTNAME} --advertise-client-urls 'http://127.0.0.1:2379' --listen-client-urls 'http://127.0.0.1:2379' --data-dir /var/etcd &
-#etcd --name ${HOSTNAME} --data-dir /var/etcd &
-echo "etcd started"
+# echo "starting etcd..."
+# etcd --name ${HOSTNAME} --advertise-client-urls 'http://127.0.0.1:2379' --listen-client-urls 'http://127.0.0.1:2379' --data-dir /var/etcd &
+# #etcd --name ${HOSTNAME} --data-dir /var/etcd &
+# echo "etcd started"
 
-for topic in `jq -r 'keys[]' /opt/env `; do 
-  echo; 
-  for key in `jq .$topic /opt/env | jq -r 'keys[]'`; do 
-    echo "$topic/$key:"; 
-    myVal=`jq -r [".$topic | .$key"] /opt/env | jq -r .[]`; 
-    echo "myVal: $myVal"; 
-    ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 put $topic/$key $myVal ; 
-    curl http://127.0.0.1:2379/v2/keys/$topic/$key -XPUT -d value="$myVal"
-  done; 
-  echo;
-done
+# mypaths=`jq -rc 'path(..)|[.[]|tostring]|join("/")' /opt/env`
+# echo "my paths: $mypaths"
 
 
-echo "killing etcd?"
-killall etcd
-echo "ok, after kill command"
+# echo "my keys: " `jq -r 'keys[]' /opt/env `
+# for topic in `jq -r 'keys[]' /opt/env `; do
+#   echo;
+#   for key in `jq .$topic /opt/env | jq -r 'keys[]'`; do
+#     echo "topic: $topic/$key:";
+#     myVal=`jq -r [".$topic | .$key"] /opt/env | jq -r .[]`;
+#     echo "myVal: $myVal";
+#     ETCDCTL_API=3 etcdctl --endpoints=127.0.0.1:2379 put $topic/$key $myVal ;
+#     curl http://127.0.0.1:2379/v2/keys/$topic/$key -XPUT -d value="$myVal"
+#   done;
+#   echo;
+# done
+
+
+# echo "killing etcd?"
+# killall etcd
+# echo "ok, after kill command"

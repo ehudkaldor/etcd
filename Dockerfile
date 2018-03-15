@@ -9,7 +9,7 @@
 FROM					ehudkaldor/alpine-s6:latest
 MAINTAINER		Ehud Kaldor <ehud@unfairfunction.org>
 
-RUN						apk add --update
+RUN						apk add --update \
 							ca-certificates \
 							curl \
 							git \
